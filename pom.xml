@@ -5,13 +5,14 @@
 
     <groupId>io.github.easyretrofit</groupId>
     <artifactId>easy-retrofit-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>the parent pom of easy-retrofit, Any mainstream Java web framework extension(starter) needs to inherit
-        this file
+    <description>
+        the parent pom of easy-retrofit, Any mainstream Java web framework extension(starter) needs to inherit this file
     </description>
-    <url>https://github.com/clownfishcode/easy-retrofit-parent</url>
+
+    <url>https://github.com/easyretrofit/easy-retrofit-parent</url>
 
     <licenses>
         <license>
@@ -20,10 +21,15 @@
         </license>
     </licenses>
 
+    <organization>
+        <name>easyretrofit</name>
+        <url>https://github.com/easyretrofit</url>
+    </organization>
+
     <scm>
-        <url>https://github.com/liuziyuan/${project.artifactId}/tree/main</url>
-        <connection>scm:git:git://github.com/liuziyuan/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://github.com/liuziyuan/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/easyretrofit/${project.artifactId}/tree/main</url>
+        <connection>scm:git:git://github.com/easyretrofit/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://github.com/easyretrofit/${project.artifactId}.git</developerConnection>
     </scm>
 
     <developers>
