@@ -49,6 +49,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <retrofit.version>2.11.0</retrofit.version>
+        <retrofit.title>retrofit</retrofit.title>
     </properties>
 
     <dependencyManagement>
@@ -78,6 +79,10 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
+                        <manifestEntries>
+                            <Specification-Title>${retrofit.title}</Specification-Title>
+                            <Specification-Version>${retrofit.version}</Specification-Version>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
