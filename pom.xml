@@ -76,7 +76,6 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <DependencyVersion>${retrofit.version}</DependencyVersion>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
