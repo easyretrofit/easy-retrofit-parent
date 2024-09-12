@@ -29,8 +29,11 @@ on:
       - '*.adoc'
       - '*.txt'
       - '.all-contributorsrc'
-
 jobs:
+
+  release-name-check:
+    uses: ./.github/workflows/pre-release.yml
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -43,6 +46,5 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
-
       - name: Build with Maven
         run: mvn -B clean package
