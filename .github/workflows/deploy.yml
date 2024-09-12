@@ -1,32 +1,35 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Maven Release
+name: Deploy
 
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  release:
+  deploy:
     runs-on: ubuntu-latest
-    name: release
+    if: startsWith(github.event.pull_request.title, 'release-')
+
+    name: deploy
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
-    - uses: actions/checkout@v4
-
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Read Pull Request Title
-      id: pr-title
+    - name: Read Pull Request Info
+      id: pr-info
       run: |
         title=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.title')
         echo "Pull Request Title: $title"
-        echo "pr_title=$title" >> $GITHUB_OUTPUT
+        echo "title=$title" >> $GITHUB_OUTPUT
+        body=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.body')
+        echo "PR Body: $body"
+        echo "body<<EOF"$'\n'"$body"$'\n'EOF >> "$GITHUB_OUTPUT"
 
     - name: Extract info from pom.xml
       id: extract-info
@@ -71,7 +74,7 @@ jobs:
 
     - name: Validate Pull Request Title
       run: |          # 读取 Pull Request 标题和版本号
-        title="${{ steps.pr-title.outputs.pr_title }}"
+        title="${{ steps.pr-info.outputs.title }}"
         version="${{ steps.extract-info.outputs.version }}"
         echo "Pull Request Title: $title"
         echo "Version: $version"
@@ -101,5 +104,23 @@ jobs:
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
+    - name: Create Github Tag
+      uses: negz/create-tag@v1
+      with:
+        version: ${{ steps.extract-info.outputs.version }}
+        message: ${{ steps.pr-info.outputs.body }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Github Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name:  ${{ steps.extract-info.outputs.version }}
+        release_name: Release  ${{ steps.extract-info.outputs.version }}
+        body: ${{ steps.pr-info.outputs.body }}
+        draft: false
+        prerelease: false
 
 
